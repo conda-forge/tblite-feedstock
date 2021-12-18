@@ -10,7 +10,7 @@ source:
   sha256: 6e0107ddf9ebb57768a455909722bea9dae3b3027290303500b233d47e0fa68b
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
   script:
     - set -ex
@@ -49,7 +49,7 @@ test:
   requires:
     - pkg-config
   commands:
-    - {{ name }} --version
+    - {{ name }} --version  # [build_platform == target_platform]
     - pkg-config {{ name }} --modversion
     - test -f $PREFIX/include/{{ name }}.h
     - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT

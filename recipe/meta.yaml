@@ -10,14 +10,16 @@ source:
   sha256: 0b0bf8eb907766eff9c53dabf1d4dd9f6469e9c847d616fcc0c005114a491252
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
   script:
     - set -ex
+    - mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR  # [unix]
     - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release
     - meson compile -C _build
     - meson test -C _build --no-rebuild --print-errorlogs --suite unit  # [build_platform == target_platform]
     - meson install -C _build --no-rebuild
+    - mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig  # [unix]
 
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -46,6 +48,7 @@ test:
   commands:
     - {{ name }} --version  # [build_platform == target_platform]
     - pkg-config {{ name }} --modversion
+    - pkg-config {{ name }} --exact-version {{ version }}
     - test -f $PREFIX/include/{{ name }}.h
     - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT
 

@@ -1,16 +1,16 @@
 {% set name = "tblite" %}
-{% set version = "0.1.0" %}
+{% set version = "0.2.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/awvwgk/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 6e0107ddf9ebb57768a455909722bea9dae3b3027290303500b233d47e0fa68b
+  url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}-source.tar.xz
+  sha256: 0b0bf8eb907766eff9c53dabf1d4dd9f6469e9c847d616fcc0c005114a491252
 
 build:
-  number: 3
+  number: 0
   skip: true  # [win]
   script:
     - set -ex

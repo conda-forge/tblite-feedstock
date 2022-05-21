@@ -1,13 +1,15 @@
 About tblite
 ============
 
-Home: https://github.com/grimme-lab/tblite
+Home: https://github.com/tblite/tblite
 
 Package license: LGPL-3.0-or-later
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/tblite-feedstock/blob/main/LICENSE.txt)
 
 Summary: Light-weight tight-binding framework
+
+Development: https://github.com/tblite/tblite
 
 Documentation: https://tblite.readthedocs.io
 

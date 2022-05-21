@@ -1,5 +1,5 @@
 {% set name = "tblite" %}
-{% set version = "0.2.0" %}
+{% set version = "0.2.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}-source.tar.xz
-  sha256: 0b0bf8eb907766eff9c53dabf1d4dd9f6469e9c847d616fcc0c005114a491252
+  sha256: 8c554bc0dec6770ffdd708bc7db21cb009f1ab602cc8d1a04be0d9107be33177
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
   script:
     - set -ex
@@ -53,13 +53,14 @@ test:
     - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT
 
 about:
-  home: https://github.com/grimme-lab/tblite
+  home: https://github.com/tblite/tblite
   license: LGPL-3.0-or-later
   license_file:
     - COPYING
     - COPYING.LESSER
   summary: Light-weight tight-binding framework
   doc_url: https://tblite.readthedocs.io
+  dev_url: https://github.com/tblite/tblite
 
 extra:
   recipe-maintainers:

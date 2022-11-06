@@ -1,25 +1,17 @@
 {% set name = "tblite" %}
-{% set version = "0.2.1" %}
+{% set version = "0.3.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}-source.tar.xz
-  sha256: 8c554bc0dec6770ffdd708bc7db21cb009f1ab602cc8d1a04be0d9107be33177
+  url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
+  sha256: 46d77c120501ac55ed6a64dea8778d6593b26fb0653c591f8e8c985e35884f0a
 
 build:
   number: 0
   skip: true  # [win]
-  script:
-    - set -ex
-    - mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR  # [unix]
-    - meson setup _build ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --buildtype=release
-    - meson compile -C _build
-    - meson test -C _build --no-rebuild --print-errorlogs --suite unit  # [build_platform == target_platform]
-    - meson install -C _build --no-rebuild
-    - mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig  # [unix]
 
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}

@@ -1,0 +1,109 @@
+diff --git a/config/cmake/Findtoml-f.cmake b/config/cmake/Findtoml-f.cmake
+index 89d68ef..72a4a5d 100644
+--- a/config/cmake/Findtoml-f.cmake
++++ b/config/cmake/Findtoml-f.cmake
+@@ -29,7 +29,7 @@ endif()
+ 
+ include("${CMAKE_CURRENT_LIST_DIR}/tblite-utils.cmake")
+ 
+-tblite_find_package("${_lib}" "${${_pkg}_FIND_METHOD}" "${_url}" "v0.2.4")
++tblite_find_package("${_lib}" "${${_pkg}_FIND_METHOD}" "${_url}" "v0.4.0")
+ 
+ if(DEFINED "_${_pkg}_FIND_METHOD")
+   unset("${_pkg}_FIND_METHOD")
+diff --git a/config/meson.build b/config/meson.build
+index 4f76160..bb820df 100644
+--- a/config/meson.build
++++ b/config/meson.build
+@@ -123,6 +123,7 @@ lib_deps += mctc_dep
+ # Create DFT-D4 library as subproject
+ dftd4_dep = dependency(
+   'dftd4',
++  version: '>=3.0.0',
+   fallback: ['dftd4', 'dftd4_dep'],
+   default_options: ['default_library=static', 'api=false', 'python=false'],
+ )
+@@ -139,6 +140,7 @@ lib_deps += sdftd3_dep
+ # Create TOML Fortran as subproject
+ tomlf_dep = dependency(
+   'toml-f',
++  version: '>=0.4.0',
+   fallback: ['toml-f', 'tomlf_dep'],
+   default_options: ['default_library=static'],
+ )
+diff --git a/fpm.toml b/fpm.toml
+index 57b7468..608fae5 100644
+--- a/fpm.toml
++++ b/fpm.toml
+@@ -18,6 +18,7 @@ mctc-lib.tag = "v0.3.0"
+ dftd4.git = "https://github.com/dftd4/dftd4"
+ s-dftd3.git = "https://github.com/awvwgk/simple-dftd3"
+ toml-f.git = "https://github.com/toml-f/toml-f"
++toml-f.tag = "v0.4.0"
+ 
+ [dev-dependencies]
+ mstore.git = "https://github.com/grimme-lab/mstore"
+diff --git a/src/tblite/param/serde.f90 b/src/tblite/param/serde.f90
+index 9855640..7c73c35 100644
+--- a/src/tblite/param/serde.f90
++++ b/src/tblite/param/serde.f90
+@@ -21,7 +21,7 @@
+ !> Each record knows how to serialize and deserialize itself.
+ module tblite_param_serde
+    use mctc_env, only : error_type, fatal_error
+-   use tblite_toml, only : toml_table, toml_error, toml_parse, toml_serializer
++   use tblite_toml, only : toml_table, toml_error, toml_parse, toml_dump
+    implicit none
+    private
+ 
+@@ -153,14 +153,16 @@ subroutine dump_to_unit(self, unit, error)
+    type(error_type), allocatable, intent(out) :: error
+ 
+    type(toml_table) :: table
+-   type(toml_serializer) :: ser
++   type(toml_error), allocatable :: ser_error
+ 
+    table = toml_table()
+-   ser = toml_serializer(unit)
+ 
+    call self%dump(table, error)
+ 
+-   call table%accept(ser)
++   call toml_dump(table, unit, ser_error)
++   if (allocated(ser_error)) then
++      call fatal_error(error, ser_error%message)
++   end if
+ 
+ end subroutine dump_to_unit
+ 
+diff --git a/src/tblite/toml.f90 b/src/tblite/toml.f90
+index 0eb5aaa..03bd114 100644
+--- a/src/tblite/toml.f90
++++ b/src/tblite/toml.f90
+@@ -19,14 +19,14 @@
+ 
+ !> Proxy module for TOML library implementation
+ module tblite_toml
+-   use tomlf, only : toml_table, toml_array, toml_error, toml_serializer, toml_parse, &
++   use tomlf, only : toml_table, toml_array, toml_error, toml_dump, toml_parse, &
+       & toml_key, get_value, set_value, add_table, add_array, len
+    use tomlf_build, only : merge_table
+    use tomlf_type, only : toml_value
+    implicit none
+    private
+ 
+-   public :: toml_table, toml_array, toml_error, toml_serializer, toml_parse, toml_key, &
++   public :: toml_table, toml_array, toml_error, toml_dump, toml_parse, toml_key, &
+       & toml_value, len
+    public :: get_value, set_value, add_table, add_array, merge_table
+ end module tblite_toml
+diff --git a/subprojects/toml-f.wrap b/subprojects/toml-f.wrap
+index 2ebd4f3..8372863 100644
+--- a/subprojects/toml-f.wrap
++++ b/subprojects/toml-f.wrap
+@@ -1,4 +1,4 @@
+ [wrap-git]
+ directory = toml-f
+ url = https://github.com/toml-f/toml-f
+-revision = v0.2.4
++revision = v0.4.0

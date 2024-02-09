@@ -8,9 +8,11 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
   sha256: 46d77c120501ac55ed6a64dea8778d6593b26fb0653c591f8e8c985e35884f0a
+  patches:
+    - toml-f-0.4.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
   run_exports:

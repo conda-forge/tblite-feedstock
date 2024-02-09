@@ -1,20 +1,5 @@
-From da759fd02b8fbf470a5c6d3df9657cca6b1d0a9a Mon Sep 17 00:00:00 2001
-From: Sebastian Ehlert <28669218+awvwgk@users.noreply.github.com>
-Date: Wed, 26 Jul 2023 10:10:41 +0200
-Subject: [PATCH] Upgrade to TOML Fortran 0.4.0 (#108)
-
----
- .github/workflows/build.yml   |  2 +-
- config/cmake/Findtoml-f.cmake |  2 +-
- config/meson.build            |  2 ++
- fpm.toml                      |  1 +
- src/tblite/param/serde.f90    | 10 ++++++----
- src/tblite/toml.f90           |  4 ++--
- subprojects/toml-f.wrap       |  2 +-
- 7 files changed, 14 insertions(+), 9 deletions(-)
-
 diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
-index 4479d8a7..cec901d8 100644
+index 9f74d2c..2d89667 100644
 --- a/.github/workflows/build.yml
 +++ b/.github/workflows/build.yml
 @@ -276,7 +276,7 @@ jobs:
@@ -27,7 +12,7 @@ index 4479d8a7..cec901d8 100644
        env:
          OMP_NUM_THREADS: 1,2,1
 diff --git a/config/cmake/Findtoml-f.cmake b/config/cmake/Findtoml-f.cmake
-index 89d68ef2..72a4a5df 100644
+index 89d68ef..72a4a5d 100644
 --- a/config/cmake/Findtoml-f.cmake
 +++ b/config/cmake/Findtoml-f.cmake
 @@ -29,7 +29,7 @@ endif()
@@ -40,7 +25,7 @@ index 89d68ef2..72a4a5df 100644
  if(DEFINED "_${_pkg}_FIND_METHOD")
    unset("${_pkg}_FIND_METHOD")
 diff --git a/config/meson.build b/config/meson.build
-index 4f76160a..bb820dfb 100644
+index 4f76160..bb820df 100644
 --- a/config/meson.build
 +++ b/config/meson.build
 @@ -123,6 +123,7 @@ lib_deps += mctc_dep
@@ -60,7 +45,7 @@ index 4f76160a..bb820dfb 100644
    default_options: ['default_library=static'],
  )
 diff --git a/fpm.toml b/fpm.toml
-index 57b74687..608fae5b 100644
+index 57b7468..608fae5 100644
 --- a/fpm.toml
 +++ b/fpm.toml
 @@ -18,6 +18,7 @@ mctc-lib.tag = "v0.3.0"
@@ -72,7 +57,7 @@ index 57b74687..608fae5b 100644
  [dev-dependencies]
  mstore.git = "https://github.com/grimme-lab/mstore"
 diff --git a/src/tblite/param/serde.f90 b/src/tblite/param/serde.f90
-index 98556409..7c73c355 100644
+index 9855640..7c73c35 100644
 --- a/src/tblite/param/serde.f90
 +++ b/src/tblite/param/serde.f90
 @@ -21,7 +21,7 @@
@@ -105,7 +90,116 @@ index 98556409..7c73c355 100644
  end subroutine dump_to_unit
  
 diff --git a/src/tblite/toml.f90 b/src/tblite/toml.f90
-index 0eb5aaa1..03bd1143 100644
+index 0eb5aaa..03bd114 100644
+--- a/src/tblite/toml.f90
++++ b/src/tblite/toml.f90
+@@ -19,14 +19,14 @@
+ 
+ !> Proxy module for TOML library implementation
+ module tblite_toml
+-   use tomlf, only : toml_table, toml_array, toml_error, toml_serializer, toml_parse, &
++   use tomlf, only : toml_table, toml_array, toml_error, toml_dump, toml_parse, &
+       & toml_key, get_value, set_value, add_table, add_array, len
+    use tomlf_build, only : merge_table
+    use tomlf_type, only : toml_value
+    implicit none
+    private
+ 
+-   public :: toml_table, toml_array, toml_error, toml_serializer, toml_parse, toml_key, &
+(livdft) (base) REDMOND.sehlert@GCRAZGDL1441:~/git/mctc/tblite$ git diff v0.3.0 HEAD | cat
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index 9f74d2c..2d89667 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -276,7 +276,7 @@ jobs:
+     - name: Run unit tests (ctest)
+       if: ${{ matrix.build == 'cmake' }}
+       run: |
+-         ctest --output-on-failure --parallel 2
++         ctest --output-on-failure --parallel 2 -R '^tblite/'
+       working-directory: ${{ env.BUILD_DIR }}
+       env:
+         OMP_NUM_THREADS: 1,2,1
+diff --git a/config/cmake/Findtoml-f.cmake b/config/cmake/Findtoml-f.cmake
+index 89d68ef..72a4a5d 100644
+--- a/config/cmake/Findtoml-f.cmake
++++ b/config/cmake/Findtoml-f.cmake
+@@ -29,7 +29,7 @@ endif()
+ 
+ include("${CMAKE_CURRENT_LIST_DIR}/tblite-utils.cmake")
+ 
+-tblite_find_package("${_lib}" "${${_pkg}_FIND_METHOD}" "${_url}" "v0.2.4")
++tblite_find_package("${_lib}" "${${_pkg}_FIND_METHOD}" "${_url}" "v0.4.0")
+ 
+ if(DEFINED "_${_pkg}_FIND_METHOD")
+   unset("${_pkg}_FIND_METHOD")
+diff --git a/config/meson.build b/config/meson.build
+index 4f76160..bb820df 100644
+--- a/config/meson.build
++++ b/config/meson.build
+@@ -123,6 +123,7 @@ lib_deps += mctc_dep
+ # Create DFT-D4 library as subproject
+ dftd4_dep = dependency(
+   'dftd4',
++  version: '>=3.0.0',
+   fallback: ['dftd4', 'dftd4_dep'],
+   default_options: ['default_library=static', 'api=false', 'python=false'],
+ )
+@@ -139,6 +140,7 @@ lib_deps += sdftd3_dep
+ # Create TOML Fortran as subproject
+ tomlf_dep = dependency(
+   'toml-f',
++  version: '>=0.4.0',
+   fallback: ['toml-f', 'tomlf_dep'],
+   default_options: ['default_library=static'],
+ )
+diff --git a/fpm.toml b/fpm.toml
+index 57b7468..608fae5 100644
+--- a/fpm.toml
++++ b/fpm.toml
+@@ -18,6 +18,7 @@ mctc-lib.tag = "v0.3.0"
+ dftd4.git = "https://github.com/dftd4/dftd4"
+ s-dftd3.git = "https://github.com/awvwgk/simple-dftd3"
+ toml-f.git = "https://github.com/toml-f/toml-f"
++toml-f.tag = "v0.4.0"
+ 
+ [dev-dependencies]
+ mstore.git = "https://github.com/grimme-lab/mstore"
+diff --git a/src/tblite/param/serde.f90 b/src/tblite/param/serde.f90
+index 9855640..7c73c35 100644
+--- a/src/tblite/param/serde.f90
++++ b/src/tblite/param/serde.f90
+@@ -21,7 +21,7 @@
+ !> Each record knows how to serialize and deserialize itself.
+ module tblite_param_serde
+    use mctc_env, only : error_type, fatal_error
+-   use tblite_toml, only : toml_table, toml_error, toml_parse, toml_serializer
++   use tblite_toml, only : toml_table, toml_error, toml_parse, toml_dump
+    implicit none
+    private
+ 
+@@ -153,14 +153,16 @@ subroutine dump_to_unit(self, unit, error)
+    type(error_type), allocatable, intent(out) :: error
+ 
+    type(toml_table) :: table
+-   type(toml_serializer) :: ser
++   type(toml_error), allocatable :: ser_error
+ 
+    table = toml_table()
+-   ser = toml_serializer(unit)
+ 
+    call self%dump(table, error)
+ 
+-   call table%accept(ser)
++   call toml_dump(table, unit, ser_error)
++   if (allocated(ser_error)) then
++      call fatal_error(error, ser_error%message)
++   end if
+ 
+ end subroutine dump_to_unit
+ 
+diff --git a/src/tblite/toml.f90 b/src/tblite/toml.f90
+index 0eb5aaa..03bd114 100644
 --- a/src/tblite/toml.f90
 +++ b/src/tblite/toml.f90
 @@ -19,14 +19,14 @@
@@ -126,7 +220,7 @@ index 0eb5aaa1..03bd1143 100644
     public :: get_value, set_value, add_table, add_array, merge_table
  end module tblite_toml
 diff --git a/subprojects/toml-f.wrap b/subprojects/toml-f.wrap
-index 2ebd4f3e..8372863a 100644
+index 2ebd4f3..8372863 100644
 --- a/subprojects/toml-f.wrap
 +++ b/subprojects/toml-f.wrap
 @@ -1,4 +1,4 @@

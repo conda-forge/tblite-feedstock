@@ -1,16 +1,3 @@
-diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
-index 9f74d2c..2d89667 100644
---- a/.github/workflows/build.yml
-+++ b/.github/workflows/build.yml
-@@ -276,7 +276,7 @@ jobs:
-     - name: Run unit tests (ctest)
-       if: ${{ matrix.build == 'cmake' }}
-       run: |
--         ctest --output-on-failure --parallel 2
-+         ctest --output-on-failure --parallel 2 -R '^tblite/'
-       working-directory: ${{ env.BUILD_DIR }}
-       env:
-         OMP_NUM_THREADS: 1,2,1
 diff --git a/config/cmake/Findtoml-f.cmake b/config/cmake/Findtoml-f.cmake
 index 89d68ef..72a4a5d 100644
 --- a/config/cmake/Findtoml-f.cmake

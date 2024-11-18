@@ -2,7 +2,7 @@
 
 set -ex
 
-# mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR
+mv $PREFIX/lib/pkgconfig/{lapack,blas}.pc $SRC_DIR
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then
   MESON_ARGS=${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}
@@ -16,6 +16,7 @@ fi
 
 meson setup _build \
   ${MESON_ARGS} \
+  -Dlapack=netlib \
   --warnlevel=0
 
 meson compile -C _build
@@ -24,4 +25,4 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then
 fi
 meson install -C _build --no-rebuild
 
-# mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig
+mv $SRC_DIR/{lapack,blas}.pc $PREFIX/lib/pkgconfig

@@ -13,6 +13,7 @@ pkgconfig = '$BUILD_PREFIX/bin/pkg-config'
 EOF
   MESON_ARGS="${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --cross-file pkgconfig.ini"
 fi
+export FFLAGS=${FFLAGS/-I /-I}
 
 meson setup _build \
   ${MESON_ARGS} \

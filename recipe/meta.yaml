@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
   sha256: 5c2249b568bfd3b987d3b28f2cbfddd5c37f675b646e17c1e750428380af464b
+  patches:
+    - find-lib.patch
 
 build:
   number: 0
@@ -19,7 +21,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - {{ stdlib('c') }}
     - {{ compiler('fortran') }}
     - meson
     - ninja

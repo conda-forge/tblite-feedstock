@@ -8,8 +8,6 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
   sha256: 5c2249b568bfd3b987d3b28f2cbfddd5c37f675b646e17c1e750428380af464b
-  patches:
-    - toml-f-0.4.patch
 
 build:
   number: 0
@@ -32,10 +30,10 @@ requirements:
   host:
     - libblas
     - liblapack
-    - mctc-lib
-    - dftd4
-    - simple-dftd3
-    - toml-f
+    - mctc-lib >=0.3
+    - dftd4 >=3.4,<4
+    - simple-dftd3 >=0.6,<2
+    - toml-f >=0.4
 
 test:
   requires:

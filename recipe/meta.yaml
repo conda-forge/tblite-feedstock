@@ -1,5 +1,5 @@
 {% set name = "tblite" %}
-{% set version = "0.3.0" %}
+{% set version = "0.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
-  sha256: 46d77c120501ac55ed6a64dea8778d6593b26fb0653c591f8e8c985e35884f0a
+  sha256: 5c2249b568bfd3b987d3b28f2cbfddd5c37f675b646e17c1e750428380af464b
   patches:
     - toml-f-0.4.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
 
   run_exports:
@@ -21,6 +21,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('fortran') }}
     - meson
     - ninja

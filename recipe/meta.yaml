@@ -12,28 +12,31 @@ source:
     - find-lib.patch
 
 build:
-  number: 0
-  skip: true  # [win]
+  number: 1
 
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ stdlib('c') }}
-    - {{ compiler('fortran') }}
+    - {{ stdlib('c') }}  # [unix]
+    - {{ compiler('c') }}  # [unix]
+    - {{ compiler('fortran') }}  # [unix]
+    - {{ stdlib('m2w64_c') }}  # [win]
+    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('m2w64_fortran') }}  # [win]
     - meson
     - ninja
-    - asciidoctor
+    - asciidoctor  # [unix]
     - pkg-config
     - llvm-openmp  # [osx]
     - libgomp  # [linux]
   host:
+    - dftd4 >=3.4,<4
     - libblas
     - liblapack
     - mctc-lib >=0.3
-    - dftd4 >=3.4,<4
+    - pkg-config
     - simple-dftd3 >=0.6,<2
     - toml-f >=0.4
 
@@ -44,8 +47,9 @@ test:
     - {{ name }} --version  # [build_platform == target_platform]
     - pkg-config {{ name }} --modversion
     - pkg-config {{ name }} --exact-version {{ version }}
-    - test -f $PREFIX/include/{{ name }}.h
-    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT
+    - test -f $PREFIX/include/{{ name }}.h  # [unix]
+    - test -f $PREFIX/lib/lib{{ name }}$SHLIB_EXT  # [unix]
+    - if not exist %LIBRARY_BIN%\\lib{{ name }}-0.dll exit 1  # [win]
 
 about:
   home: https://github.com/tblite/tblite

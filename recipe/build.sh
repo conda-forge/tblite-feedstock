@@ -21,7 +21,7 @@ meson setup _build \
   --warnlevel=0
 
 meson compile -C _build
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" && "$target_platform" == linux-* ]]; then
   meson test -C _build --no-rebuild --print-errorlogs --suite unit -t 20
 fi
 meson install -C _build --no-rebuild

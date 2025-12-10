@@ -1,0 +1,52 @@
+diff --git a/src/tblite/io/numpy/utils.f90 b/src/tblite/io/numpy/utils.f90
+index 22c5a49..ee6bb8c 100644
+--- a/src/tblite/io/numpy/utils.f90
++++ b/src/tblite/io/numpy/utils.f90
+@@ -87,6 +87,7 @@ subroutine read_char_r0(reader, var, stat)
+       end if
+       var = transfer(reader%buffer(reader%pos+1:reader%pos+len(var)), var)
+       reader%pos = reader%pos + len(var)
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if
+@@ -117,6 +118,7 @@ subroutine read_char_r1(reader, var, stat)
+       end if
+       var = reader%buffer(reader%pos+1:reader%pos+size(var))
+       reader%pos = reader%pos + size(var)
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if
+@@ -134,6 +136,7 @@ subroutine read_i4_r1(reader, var, stat)
+       end if
+       var = transfer(reader%buffer(reader%pos+1:reader%pos+size(var)*4), var)
+       reader%pos = reader%pos + size(var) * 4
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if
+@@ -151,6 +154,7 @@ subroutine read_rdp_r1(reader, var, stat)
+       end if
+       var = transfer(reader%buffer(reader%pos+1:reader%pos+size(var)*8), var)
+       reader%pos = reader%pos + size(var) * 8
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if
+@@ -168,6 +172,7 @@ subroutine read_rdp_r2(reader, var, stat)
+       end if
+       var = reshape(transfer(reader%buffer(reader%pos+1:reader%pos+size(var)*8), var), shape(var))
+       reader%pos = reader%pos + size(var) * 8
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if
+@@ -185,6 +190,7 @@ subroutine read_rdp_r3(reader, var, stat)
+       end if
+       var = reshape(transfer(reader%buffer(reader%pos+1:reader%pos+size(var)*8), var), shape(var))
+       reader%pos = reader%pos + size(var) * 8
++      stat = 0
+    else
+       read(reader%io, iostat=stat) var
+    end if

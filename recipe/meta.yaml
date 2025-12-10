@@ -10,6 +10,7 @@ source:
   sha256: e8a70b72ed0a0db0621c7958c63667a9cd008c97c868a4a417ff1bc262052ea8
   patches:
     - find-lib.patch
+    - set-stat.patch
 
 build:
   number: 1

@@ -1,0 +1,31 @@
+diff --git a/config/meson.build b/config/meson.build
+index 707cc0f..1d4ce3e 100644
+--- a/config/meson.build
++++ b/config/meson.build
+@@ -23,9 +23,13 @@ endif
+ fc_id = fc.get_id()
+ 
+ if fc_id == 'gcc'
++  add_global_arguments(
++    '-fcheck=all',
++    '-fbacktrace',
++    language: 'fortran',
++  )
+   add_project_arguments(
+     '-ffree-line-length-none',
+-    '-fbacktrace',
+     '-Wno-maybe-uninitialized',
+     language: 'fortran',
+   )
+diff --git a/meson.build b/meson.build
+index 15205fd..ef3632a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -23,6 +23,7 @@ project(
+   default_options: [
+     'buildtype=debugoptimized',
+     'default_library=both',
++    'warning_level=everything',
+   ],
+ )
+ install = not (meson.is_subproject() and get_option('default_library') == 'static')

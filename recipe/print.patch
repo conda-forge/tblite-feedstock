@@ -1,0 +1,38 @@
+diff --git a/src/tblite/param.f90 b/src/tblite/param.f90
+index 6dff4f8..1156ab5 100644
+--- a/src/tblite/param.f90
++++ b/src/tblite/param.f90
+@@ -80,7 +80,7 @@ module tblite_param
+       type(thirdorder_record), allocatable :: thirdorder
+       !> Element specific parameter records
+       type(element_record), allocatable :: record(:)
+-      !> Abstract post processing class 
++      !> Abstract post processing class
+       type(post_processing_param_list), allocatable :: post_proc
+    contains
+       generic :: load => load_from_array
+@@ -112,8 +112,10 @@ subroutine load_from_toml(self, table, error)
+ 
+    type(toml_table), pointer :: child
+    integer :: this_format
++   integer :: stat
+ 
+-   call get_value(table, k_meta, child)
++   call get_value(table, k_meta, child, stat=stat)
++   write(*, *) 'load_from_toml_0', k_meta, associated(child), stat
+    call get_value(child, k_format, this_format, current_format)
+    if (this_format < 1) then
+       call fatal_error(error, "Parametrer file format must be a positive version")
+@@ -173,9 +175,10 @@ subroutine load_from_toml(self, table, error)
+    if (associated(child)) then
+       allocate(self%post_proc)
+       call self%post_proc%load(child, error)
+-   end if 
++   end if
+ 
+-   call get_value(table, k_element, child)
++   call get_value(table, k_element, child, stat=stat)
++   write(*, *) 'load_from_toml_1', k_element, associated(child), stat
+    call records_from_table(self%record, child, error)
+    if (allocated(error)) return
+ 

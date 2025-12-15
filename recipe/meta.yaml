@@ -11,9 +11,11 @@ source:
   patches:
     - find-lib.patch
     - set-stat.patch
+    - fix-tblite-table-set-value.patch
+    - print.patch
 
 build:
-  number: 1
+  number: 2
 
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -39,7 +41,7 @@ requirements:
     - mctc-lib >=0.3
     - pkg-config
     - simple-dftd3 >=0.6,<2
-    - toml-f >=0.4
+    - toml-f >=0.4.3
 
 test:
   requires:

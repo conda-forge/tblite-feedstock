@@ -17,8 +17,9 @@ export FFLAGS=${FFLAGS/-I /-I}
 
 meson setup _build \
   ${MESON_ARGS} \
+  -Dfortran_args="-fcheck=all" \
   -Dlapack=netlib \
-  --warnlevel=0
+  --warnlevel=everything
 
 meson compile -C _build
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then

@@ -1,0 +1,85 @@
+diff --git a/app/driver_param.f90 b/app/driver_param.f90
+index e64bc85..97115d7 100644
+--- a/app/driver_param.f90
++++ b/app/driver_param.f90
+@@ -44,6 +44,7 @@ subroutine param_main(config, error)
+    type(param_record), allocatable :: param, base
+    type(toml_table) :: table1, table2
+ 
++   write(*, *) "param_main_00"
+    if (allocated(config%method)) then
+       allocate(base)
+       select case(config%method)
+@@ -59,30 +60,48 @@ subroutine param_main(config, error)
+    end if
+    if (allocated(error)) return
+ 
++   write(*, *) "param_main_01"
+    if (allocated(config%input)) then
+       allocate(param)
+       call param%load(config%input, error)
+-
++      write(*, *) "param_main_02"
+       if (.not.allocated(error) .and. allocated(base)) then
++         write(*, *) "param_main_03"
+          table1 = toml_table()
++         write(*, *) "param_main_04"
+          call param%dump(table1, error)
++         write(*, *) "param_main_05"
+          if (.not. allocated(error)) then
++            write(*, *) "param_main_06"
+             table2 = toml_table()
++            write(*, *) "param_main_07"
+             call base%dump(table2, error)
++            write(*, *) "param_main_08"
+          end if
+          if (.not. allocated(error)) then
++            write(*, *) "param_main_09"
+             call merge_table(table1, table2)
++            write(*, *) "param_main_10"
+             call table2%destroy
++            write(*, *) "param_main_11"
+             deallocate(param, base)
++            write(*, *) "param_main_12"
+             allocate(param)
++            write(*, *) "param_main_13"
+             call param%load(table1, error)
++            write(*, *) "param_main_14"
+             call table1%destroy
++            write(*, *) "param_main_15"
+          end if
+       end if
+    else
++      write(*, *) "param_main_16"
+       call move_alloc(base, param)
++      write(*, *) "param_main_17"
+    end if
++   write(*, *) "param_main_18"
+    if (allocated(error)) return
++   write(*, *) "param_main_19"
+ 
+    if (config%verbosity > 1) then
+       if (allocated(param%name)) &
+@@ -90,15 +109,21 @@ subroutine param_main(config, error)
+       if (allocated(param%reference)) &
+          write(output_unit, '(a)') param%reference
+    end if
+-
++   write(*, *) "param_main_20"
+    if (allocated(config%output)) then
++      write(*, *) "param_main_21"
+       call param%dump(config%output, error)
++      write(*, *) "param_main_22"
+       if (.not.allocated(error)) then
++         write(*, *) "param_main_23"
+          if (config%verbosity > 0) write(output_unit, '(a)') &
+             "[Info] Parameter file written to '"//config%output//"'"
++         write(*, *) "param_main_24"
+       end if
+    end if
++   write(*, *) "param_main_25"
+    if (allocated(error)) return
++   write(*, *) "param_main_26"
+ 
+ end subroutine param_main
+ 

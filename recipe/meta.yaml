@@ -8,6 +8,9 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
   sha256: 372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42
+  patches:
+    - find-quadmath.patch
+    - find-lib.patch  # [win]
 
 build:
   number: 0

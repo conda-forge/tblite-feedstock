@@ -86,6 +86,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-tblite-green.svg)](https://anaconda.org/conda-forge/tblite) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/tblite.svg)](https://anaconda.org/conda-forge/tblite) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/tblite.svg)](https://anaconda.org/conda-forge/tblite) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/tblite.svg)](https://anaconda.org/conda-forge/tblite) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-tblite--devel-green.svg)](https://anaconda.org/conda-forge/tblite-devel) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/tblite-devel.svg)](https://anaconda.org/conda-forge/tblite-devel) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/tblite-devel.svg)](https://anaconda.org/conda-forge/tblite-devel) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/tblite-devel.svg)](https://anaconda.org/conda-forge/tblite-devel) |
 
 Installing tblite
 =================
@@ -97,16 +98,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `tblite` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `tblite, tblite-devel` can be installed with `conda`:
 
 ```
-conda install tblite
+conda install tblite tblite-devel
 ```
 
 or with `mamba`:
 
 ```
-mamba install tblite
+mamba install tblite tblite-devel
 ```
 
 It is possible to list all of the versions of `tblite` available on your platform with `conda`:
@@ -202,4 +203,5 @@ Feedstock Maintainers
 =====================
 
 * [@awvwgk](https://github.com/awvwgk/)
+* [@yuzie007](https://github.com/yuzie007/)
 

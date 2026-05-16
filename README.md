@@ -202,4 +202,5 @@ Feedstock Maintainers
 =====================
 
 * [@awvwgk](https://github.com/awvwgk/)
+* [@yuzie007](https://github.com/yuzie007/)
 

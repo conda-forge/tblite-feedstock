@@ -1,5 +1,5 @@
 {% set name = "tblite" %}
-{% set version = "0.5.0" %}
+{% set version = "0.6.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,13 +7,13 @@ package:
 
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
-  sha256: e8a70b72ed0a0db0621c7958c63667a9cd008c97c868a4a417ff1bc262052ea8
+  sha256: 372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42
   patches:
     - find-lib.patch
     - set-stat.patch
 
 build:
-  number: 1
+  number: 0
 
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}

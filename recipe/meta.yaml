@@ -1,5 +1,5 @@
 {% set name = "tblite" %}
-{% set version = "0.6.0" %}
+{% set version = "0.7.0" %}
 
 package:
   name: {{ name }}-pkg
@@ -7,9 +7,8 @@ package:
 
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.xz
-  sha256: 372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42
+  sha256: 3a7cb4602101e828caf41c38ca5e30f82de82d0d26d5db40168acdcad3462b92
   patches:
-    - find-quadmath.patch
     - find-lib.patch  # [win]
 
 build:

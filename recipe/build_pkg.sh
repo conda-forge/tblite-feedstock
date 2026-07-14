@@ -18,6 +18,7 @@ export FFLAGS=${FFLAGS/-I /-I}
 meson setup _build \
   ${MESON_ARGS} \
   -Dlapack=netlib \
+  -Dddx=false \
   --warnlevel=0
 
 meson compile -C _build
